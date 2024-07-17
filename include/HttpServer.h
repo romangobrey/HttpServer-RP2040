@@ -22,6 +22,6 @@ namespace Rp2040
     public:
         void init(UCHAR serverIp[4], UCHAR gateway[4], UCHAR subnetMask[4], UWORD port = 80, UDOUBLE baudRate = 115200);
         void handleRequest(HttpResponse (*callback)(HttpRequest));
-        void handleRequest(IHttpHandler *handler);
+        void handleRequestWithHandler(IHttpHandler *handler);
     };
 }

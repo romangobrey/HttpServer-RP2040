@@ -1,6 +1,6 @@
 {
   "name": "HttpServer",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "HTTP server for Waveshare RP2040-ETH",
   "keywords": "http, server, RP2040, CH9120",
   "repository": {

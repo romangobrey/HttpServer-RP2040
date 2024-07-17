@@ -41,5 +41,5 @@ void setup()
 
 void loop()
 {
-    httpServer.handleRequest(httpHandlerPointer);
+    httpServer.handleRequestWithHandler(httpHandlerPointer);
 }
