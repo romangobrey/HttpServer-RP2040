@@ -38,6 +38,13 @@
       "files": [
         "httpServer.cpp"
       ]
+    },
+    {
+      "name": "CustomHandler",
+      "base": "examples",
+      "files": [
+        "customHandler.cpp"
+      ]
     }
   ]
 }
