@@ -9,20 +9,29 @@ namespace MyCustomHandlers
     class CustomHandler : public IHttpHandler
     {
     public:
-      void handle(HttpRequest &request);
+        void handle(const HttpRequest &request) override;
     };
 }
 
 using namespace MyCustomHandlers;
 
-void CustomHandler::handle(HttpRequest &request)
+void CustomHandler::handle(const HttpRequest &request)
 {
-    Serial.println("CustomHandlers::CustomHandler::handle!!!!!");
+    HttpResponse response;
+    response.headers["Connection"] = "close";
+    response.headers["Content-Type"] = "text/plain";
+
+    response.code = 200;
+    response.codeDescription = "OK";
+    response.body = "My custom response";
+
+    response.headers["Content-Length"] = response.body.length();
+
+    UART_ID1.print(response.toString());
 }
 
 HttpServer httpServer;
 CustomHandler httpHandler;
-IHttpHandler *httpHandlerPointer = &httpHandler;
 
 void setup()
 {
@@ -41,5 +50,5 @@ void setup()
 
 void loop()
 {
-    httpServer.handleRequestWithHandler(httpHandlerPointer);
+    httpServer.handleRequest(&httpHandler);
 }

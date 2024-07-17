@@ -55,7 +55,7 @@ void HttpServer::handleRequest(HttpResponse (*callback)(HttpRequest) = nullptr)
     }
 }
 
-void HttpServer::handleRequestWithHandler(IHttpHandler *handler)
+void HttpServer::handleRequest(IHttpHandler *handler)
 {
     String rawRequest = getRawRequest();
     if (rawRequest == NULL || rawRequest == "")

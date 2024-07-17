@@ -7,8 +7,7 @@ namespace Rp2040
     class IHttpHandler
     {
     public:
-        void handle(HttpRequest &request);
-        ~IHttpHandler() {}
+        virtual void handle(const HttpRequest &request) = 0;
     };
 
     class HttpServer
@@ -22,6 +21,6 @@ namespace Rp2040
     public:
         void init(UCHAR serverIp[4], UCHAR gateway[4], UCHAR subnetMask[4], UWORD port = 80, UDOUBLE baudRate = 115200);
         void handleRequest(HttpResponse (*callback)(HttpRequest));
-        void handleRequestWithHandler(IHttpHandler *handler);
+        void handleRequest(IHttpHandler *handler);
     };
 }
