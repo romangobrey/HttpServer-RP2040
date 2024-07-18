@@ -7,7 +7,7 @@ namespace Rp2040
     class IHttpHandler
     {
     public:
-        virtual void handle(const HttpRequest &request) = 0;
+        virtual HttpResponse handle(const HttpRequest &request) = 0;
     };
 
     class HttpServer

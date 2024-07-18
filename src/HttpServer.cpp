@@ -63,7 +63,10 @@ void HttpServer::handleRequest(IHttpHandler *handler)
         return;
     }
 
-    HttpRequest request = httpParser.GetHttpRequest(rawRequest);
-    handler->handle(request);
-    // sendResponse(response);
+    if (handler != NULL)
+    {
+        HttpRequest request = httpParser.GetHttpRequest(rawRequest);
+        HttpResponse response = handler->handle(request);
+        sendResponse(response);
+    }
 }
