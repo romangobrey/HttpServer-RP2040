@@ -9,25 +9,24 @@ namespace MyCustomHandlers
     class CustomHandler : public IHttpHandler
     {
     public:
-        void handle(const HttpRequest &request) override;
+        HttpResponse handle(const HttpRequest &request) override;
     };
 }
 
 using namespace MyCustomHandlers;
 
-void CustomHandler::handle(const HttpRequest &request)
+HttpResponse CustomHandler::handle(const HttpRequest &request)
 {
     HttpResponse response;
-    response.headers["Connection"] = "close";
-    response.headers["Content-Type"] = "text/plain";
-
     response.code = 200;
     response.codeDescription = "OK";
     response.body = "My custom response";
 
+    response.headers["Connection"] = "close";
+    response.headers["Content-Type"] = "text/plain";
     response.headers["Content-Length"] = response.body.length();
 
-    UART_ID1.print(response.toString());
+    return response;
 }
 
 HttpServer httpServer;
