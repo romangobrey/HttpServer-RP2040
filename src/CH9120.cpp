@@ -8,6 +8,7 @@ UCHAR CH9120_TARGET_IP[4] = {192, 168, 88, 254};  // TARGET_IP
 UWORD CH9120_LOCAL_PORT = 80;                     // LOCAL PORT1
 UWORD CH9120_TARGET_PORT = 8888;                  // TARGET PORT
 UDOUBLE CH9120_BAUD_RATE = 115200;                // BAUD RATE
+UBYTE CH9120_DHCP = 1;                            // DHCP (0 - Disabled, 1 - Enabled)
 
 UCHAR tx[8] = {0x57, 0xAB};
 
@@ -271,6 +272,17 @@ void CH9120_SetBaudRate(UDOUBLE value)
 }
 
 /**
+ * Sets DHCP mode (is set internally, will be sent to CH9120 on init)
+ *
+ * @param value
+ * @return void
+ */
+void CH9120_SetDhcpMode(UBYTE value)
+{
+  CH9120_DHCP = value;
+}
+
+/**
  * Sends mode to CH9120 (was set internally or default, is sent to CH9120 now)
  *
  * @return void
@@ -359,6 +371,17 @@ void CH9120_TxBaudRate()
 }
 
 /**
+ * Sends DHCP mode to CH9120 (was set internally, is sent to CH9120 now)
+ *
+ * @return void
+ */
+void CH9120_TxDhcpMode()
+{
+  CH9120_Tx4Bytes(CH9120_DHCP, ALLOWDHCP);
+  delay(100);
+}
+
+/**
  * Initialize CH9120
  *
  * @return void
@@ -383,6 +406,7 @@ void CH9120_Init()
   CH9120_TxBaudRate();
   CH9120_TxTargetIp();
   CH9120_TxTargetPort();
+  CH9120_TxDhcpMode();
   CH9120_EndConfig();
 
   UART_ID1.begin(TRANSPORT_BAUD_RATE);

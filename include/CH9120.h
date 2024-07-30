@@ -35,16 +35,16 @@
 #define UDP_SERVER 2
 #define UDP_CLIENT 3
 
-#define MODE1 0x10               // Port 1: Setup Mode   0x00:TCP Server 0x01:TCP Client 0x02:UDP Server 0x03:UDP Client
-#define LOCAL_IP 0x11            // Local IP
+#define MODE1 0x10               // Setup Mode (0x00:TCP Server, 0x01:TCP Client, 0x02:UDP Server, 0x03:UDP Client)
+#define LOCAL_IP 0x11            // Local Ip
 #define SUBNET_MASK 0x12         // Subnet Mask
 #define GATEWAY 0x13             // Gateway
-#define LOCAL_PORT1 0X14         // Port 1:Local Port
-#define TARGET_IP1 0x15          // Port 1:Target IP
-#define TARGET_PORT1 0x16        // Port 1:Target Port
-#define PORT_RANDOM_ENABLE1 0x17 // Port 1:Port Random Enable
-#define UART1_BAUD1 0x21         // Port 1:Baud rate of serial port 1
-#define ALLOWDHCP 0x33           // Port 1:Baud rate of serial port 1
+#define LOCAL_PORT1 0X14         // Local Port
+#define TARGET_IP1 0x15          // Target Ip
+#define TARGET_PORT1 0x16        // Target Port
+#define PORT_RANDOM_ENABLE1 0x17 // Port Random Enable
+#define UART1_BAUD1 0x21         // Baud rate of serial port 1
+#define ALLOWDHCP 0x33           // DHCP mode
 
 enum ModeType
 {
@@ -63,5 +63,6 @@ void CH9120_SetSubnetMask(UCHAR value[4]);
 void CH9120_SetTargetIp(UCHAR value[4]);
 void CH9120_SetTargetPort(UWORD value);
 void CH9120_SetBaudRate(UDOUBLE value);
+void CH9120_SetDhcpMode(UBYTE value);
 
 #endif
