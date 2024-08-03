@@ -17,6 +17,10 @@ using namespace MyCustomHandlers;
 
 HttpResponse CustomHandler::handle(const HttpRequest &request)
 {
+    const char *id = rp2040.getChipID();
+    arduino::String str123(id);
+    Serial.println("in - " + str123);
+    
     HttpResponse response;
     response.code = 200;
     response.codeDescription = "OK";
