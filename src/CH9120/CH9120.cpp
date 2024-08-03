@@ -1,4 +1,4 @@
-#include "CH9120.h"
+#include "CH9120/CH9120.h"
 
 UCHAR CH9120_MODE = TCP_SERVER;                   // Optional:TCP_SERVER、TCP_CLIENT、UDP_SERVER、UDP_CLIENT
 UCHAR CH9120_LOCAL_IP[4] = {192, 168, 1, 2};      // LOCAL IP

@@ -6,7 +6,7 @@ using namespace Rp2040;
 
 HttpResponse handleRequest(HttpRequest request);
 
-HttpServer httpServer;
+HttpServer httpServer(DeviceModel::Rp2040Eth);
 
 void setup()
 {

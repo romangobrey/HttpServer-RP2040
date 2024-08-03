@@ -29,7 +29,7 @@ HttpResponse CustomHandler::handle(const HttpRequest &request)
     return response;
 }
 
-HttpServer httpServer;
+HttpServer httpServer(DeviceModel::Rp2040Eth);
 CustomHandler httpHandler;
 
 void setup()
