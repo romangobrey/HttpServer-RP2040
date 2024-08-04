@@ -4,69 +4,73 @@
 
 using namespace Rp2040;
 
-HttpParser httpParser;
-
-void HttpServer::init(UCHAR serverIp[4], UCHAR gateway[4], UCHAR subnetMask[4], UWORD port, UDOUBLE baudRate)
+Rp2040::HttpServer::HttpServer(DeviceModel device)
 {
-    CH9120_SetMode(TcpServerMode);
-    CH9120_SetLocalIp(serverIp);
-    CH9120_SetGateway(gateway);
-    CH9120_SetSubnetMask(subnetMask);
-    CH9120_SetLocalPort(port);
-    CH9120_SetBaudRate(baudRate);
+    deviceModel = device;
+}
 
-    CH9120_Init();
+void Rp2040::HttpServer::init(UCHAR serverIp[4], UWORD port)
+{
+    switch (deviceModel)
+    {
+    case DeviceModel::Rp2040Eth:
+        ch9120Server.init(serverIp, port);
+        break;
+
+    case DeviceModel::W5500EvbPico:
+        w5500Server.init(serverIp, port);
+        break;
+
+    default:
+        Serial.println("This device is not yet supported");
+        break;
+    }
 
     isInitialized = true;
 }
 
-String HttpServer::getRawRequest()
-{
-    if (UART_ID1.available())
-    {
-        return UART_ID1.readString();
-    }
-    return String();
-}
-
-void HttpServer::sendResponse(HttpResponse response)
-{
-    UART_ID1.print(response.toString());
-}
-
-void HttpServer::handleRequest(HttpResponse (*callback)(HttpRequest) = nullptr)
+void Rp2040::HttpServer::handleRequest(HttpResponse (*callback)(HttpRequest) = nullptr)
 {
     if (!Rp2040::HttpServer::isInitialized)
     {
         return; // throw exception?
     }
 
-    String rawRequest = getRawRequest();
-    if (rawRequest == NULL || rawRequest == "")
+    switch (deviceModel)
     {
-        return;
-    }
+    case DeviceModel::Rp2040Eth:
+        ch9120Server.handleRequest(callback);
+        break;
 
-    if (callback != NULL)
-    {
-        HttpRequest request = httpParser.GetHttpRequest(rawRequest);
-        HttpResponse response = callback(request);
-        sendResponse(response);
+    case DeviceModel::W5500EvbPico:
+        w5500Server.handleRequest(callback);
+        break;
+
+    default:
+        Serial.println("This device is not yet supported");
+        break;
     }
 }
 
-void HttpServer::handleRequest(IHttpHandler *handler)
+void Rp2040::HttpServer::handleRequest(IHttpHandler *handler)
 {
-    String rawRequest = getRawRequest();
-    if (rawRequest == NULL || rawRequest == "")
+    if (!Rp2040::HttpServer::isInitialized)
     {
-        return;
+        return; // throw exception?
     }
 
-    if (handler != NULL)
+    switch (deviceModel)
     {
-        HttpRequest request = httpParser.GetHttpRequest(rawRequest);
-        HttpResponse response = handler->handle(request);
-        sendResponse(response);
+    case DeviceModel::Rp2040Eth:
+        ch9120Server.handleRequest(handler);
+        break;
+
+    case DeviceModel::W5500EvbPico:
+        w5500Server.handleRequest(handler);
+        break;
+
+    default:
+        Serial.println("This device is not yet supported");
+        break;
     }
 }
