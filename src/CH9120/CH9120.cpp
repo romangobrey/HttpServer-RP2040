@@ -376,13 +376,28 @@ void CH9120_Init()
 
   CH9120_StartConfig();
   CH9120_TxMode();
-  CH9120_TxLocalIp();
-  CH9120_TxGateway();
-  CH9120_TxSubnetMask();
-  CH9120_TxLocalPort();
-  CH9120_TxBaudRate();
-  CH9120_TxTargetIp();
-  CH9120_TxTargetPort();
+
+  switch (CH9120_MODE)
+  {
+  case TCP_SERVER:
+    CH9120_TxLocalIp();
+    CH9120_TxLocalPort();
+    break;
+
+  case TCP_CLIENT:
+    CH9120_TxLocalIp();
+    CH9120_TxLocalPort();
+    CH9120_TxGateway();
+    CH9120_TxSubnetMask();
+    CH9120_TxBaudRate();
+    CH9120_TxTargetIp();
+    CH9120_TxTargetPort();
+    break;
+
+  default:
+    break;
+  }
+
   CH9120_EndConfig();
 
   UART_ID1.begin(TRANSPORT_BAUD_RATE);

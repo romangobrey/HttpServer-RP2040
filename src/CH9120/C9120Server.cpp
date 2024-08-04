@@ -4,14 +4,11 @@
 
 using namespace Rp2040;
 
-void CH9120Server::init(UCHAR serverIp[4], UCHAR gateway[4], UCHAR subnetMask[4], UWORD port, UDOUBLE baudRate)
+void CH9120Server::init(UCHAR serverIp[4], UWORD port)
 {
     CH9120_SetMode(TcpServerMode);
     CH9120_SetLocalIp(serverIp);
-    CH9120_SetGateway(gateway);
-    CH9120_SetSubnetMask(subnetMask);
     CH9120_SetLocalPort(port);
-    CH9120_SetBaudRate(baudRate);
 
     CH9120_Init();
 }

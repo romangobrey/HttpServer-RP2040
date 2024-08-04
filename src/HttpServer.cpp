@@ -9,16 +9,21 @@ Rp2040::HttpServer::HttpServer(DeviceModel device)
     deviceModel = device;
 }
 
-void Rp2040::HttpServer::init(UCHAR serverIp[4], UCHAR gateway[4], UCHAR subnetMask[4], UWORD port, UDOUBLE baudRate)
+void Rp2040::HttpServer::init(UCHAR serverIp[4], UWORD port)
 {
-    if (deviceModel == DeviceModel::Rp2040Eth)
+    switch (deviceModel)
     {
-        ch9120Server.init(serverIp, gateway, subnetMask, port, baudRate);
-    }
+    case DeviceModel::Rp2040Eth:
+        ch9120Server.init(serverIp, port);
+        break;
 
-    if (deviceModel == DeviceModel::W5500EvbPico)
-    {
-        w5500Server.init(serverIp, gateway, subnetMask, port);
+    case DeviceModel::W5500EvbPico:
+        w5500Server.init(serverIp, port);
+        break;
+
+    default:
+        Serial.println("This device is not yet supported");
+        break;
     }
 
     isInitialized = true;
@@ -31,14 +36,19 @@ void Rp2040::HttpServer::handleRequest(HttpResponse (*callback)(HttpRequest) = n
         return; // throw exception?
     }
 
-    if (deviceModel == DeviceModel::W5500EvbPico)
+    switch (deviceModel)
     {
-        w5500Server.handleRequest(callback);
-    }
-
-    if (deviceModel == DeviceModel::Rp2040Eth)
-    {
+    case DeviceModel::Rp2040Eth:
         ch9120Server.handleRequest(callback);
+        break;
+
+    case DeviceModel::W5500EvbPico:
+        w5500Server.handleRequest(callback);
+        break;
+
+    default:
+        Serial.println("This device is not yet supported");
+        break;
     }
 }
 
@@ -49,13 +59,18 @@ void Rp2040::HttpServer::handleRequest(IHttpHandler *handler)
         return; // throw exception?
     }
 
-    if (deviceModel == DeviceModel::W5500EvbPico)
+    switch (deviceModel)
     {
-        w5500Server.handleRequest(handler);
-    }
-
-    if (deviceModel == DeviceModel::Rp2040Eth)
-    {
+    case DeviceModel::Rp2040Eth:
         ch9120Server.handleRequest(handler);
+        break;
+
+    case DeviceModel::W5500EvbPico:
+        w5500Server.handleRequest(handler);
+        break;
+
+    default:
+        Serial.println("This device is not yet supported");
+        break;
     }
 }

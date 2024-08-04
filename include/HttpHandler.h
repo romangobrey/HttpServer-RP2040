@@ -1,8 +1,13 @@
+#pragma once
+
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 
-class IHttpHandler
+namespace Rp2040
 {
-public:
-    virtual HttpResponse handle(const HttpRequest &request) = 0;
-};
+    class IHttpHandler
+    {
+    public:
+        virtual HttpResponse handle(const HttpRequest &request) = 0;
+    };
+}
