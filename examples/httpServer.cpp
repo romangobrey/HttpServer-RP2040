@@ -15,10 +15,7 @@ void setup()
 
     // Init HTTP server
     UCHAR serverIp[4] = {192, 168, 1, 170};
-    UCHAR gateway[4] = {192, 168, 1, 1};
-    UCHAR subnetMask[4] = {255, 255, 255, 0};
-
-    httpServer.init(serverIp, gateway, subnetMask);
+    httpServer.init(serverIp);
 
     Serial.println("init finished");
 }
