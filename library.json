@@ -1,15 +1,16 @@
 {
   "name": "HttpServer",
-  "version": "1.0.12",
-  "description": "HTTP server for Waveshare RP2040-ETH",
-  "keywords": "http, server, RP2040, CH9120",
+  "version": "1.0.13",
+  "description": "HTTP server for embedded devices",
+  "keywords": "http, server, Pico, RP2040, CH9120, W5500",
   "repository": {
     "type": "git",
     "url": "https://github.com/romangobrey/HttpServer-RP2040"
   },
   "authors": [
     {
-      "name": "Serhii Ivantishen"
+      "name": "Serhii Ivantishen",
+      "maintainer": true
     },
     {
       "name": "jercy"
