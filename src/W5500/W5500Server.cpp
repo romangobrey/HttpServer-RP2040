@@ -17,15 +17,22 @@ String Rp2040::W5500Server::getRawRequest(EthernetClient client)
 
     String request;
     bool currentLineIsBlank = true;
+
     while (true)
     {
         char c = client.read();
         request.concat(c);
+
         if (c == '\n' && currentLineIsBlank)
         {
+            while (client.available())
+            {
+                char c = client.read();
+                request.concat(c);
+            }
             break;
         }
-        if (c == '\n')
+        else if (c == '\n')
         {
             currentLineIsBlank = true;
         }
@@ -34,7 +41,6 @@ String Rp2040::W5500Server::getRawRequest(EthernetClient client)
             currentLineIsBlank = false;
         }
     }
-
     return request;
 }
 

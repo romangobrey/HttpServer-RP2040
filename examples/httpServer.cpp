@@ -6,7 +6,7 @@ using namespace Rp2040;
 
 HttpResponse handleRequest(HttpRequest request);
 
-HttpServer httpServer(DeviceModel::Rp2040Eth);
+HttpServer httpServer(DeviceModel::W5500EvbPico);
 
 void setup()
 {

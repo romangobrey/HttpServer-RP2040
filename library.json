@@ -1,6 +1,6 @@
 {
   "name": "HttpServer",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "HTTP server for embedded devices",
   "keywords": "http, server, Pico, RP2040, CH9120, W5500",
   "repository": {

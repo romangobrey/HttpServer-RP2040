@@ -29,7 +29,7 @@ HttpResponse CustomHandler::handle(const HttpRequest &request)
     return response;
 }
 
-HttpServer httpServer(DeviceModel::Rp2040Eth);
+HttpServer httpServer(DeviceModel::W5500EvbPico);
 CustomHandler httpHandler;
 
 void setup()
