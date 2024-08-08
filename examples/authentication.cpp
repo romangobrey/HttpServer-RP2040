@@ -1,11 +1,12 @@
 #include <Arduino.h>
 #include <HttpServer.h>
+#include "..\configs\Rp2040Eth.h"
 
 using namespace Rp2040;
 
 HttpResponse handleRequest(HttpRequest request);
 
-HttpServer httpServer(DeviceModel::Rp2040Eth);
+HttpServer httpServer(Config_DeviceModel);
 
 void setup()
 {
@@ -13,8 +14,8 @@ void setup()
     Serial.println("init started");
 
     // Init HTTP server
-    UCHAR serverIp[4] = {192, 168, 1, 170};
-    httpServer.init(serverIp);
+    //UCHAR serverIp[4] = {192, 168, 1, 170};
+    httpServer.init(Config_ServerIp);
 
     Serial.println("init finished");
 }
