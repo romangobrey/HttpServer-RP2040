@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <HttpServer.h>
 #include <HttpParser.h>
+#include "..\configuration\W5500EvbPico.h"
 
 using namespace Rp2040;
 
@@ -29,18 +30,14 @@ HttpResponse CustomHandler::handle(const HttpRequest &request)
     return response;
 }
 
-HttpServer httpServer(DeviceModel::W5500EvbPico);
+HttpServer httpServer(Config_DeviceModel);
 CustomHandler httpHandler;
 
 void setup()
 {
     Serial.begin(115200);
     Serial.println("init started");
-
-    // Init HTTP server
-    UCHAR serverIp[4] = {192, 168, 1, 170};
-    httpServer.init(serverIp);
-
+    httpServer.init(Config_ServerIp);
     Serial.println("init finished");
 }
 
