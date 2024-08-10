@@ -1,4 +1,4 @@
-#include "Config123.h"
+#include "Configuration.h"
 #include "DeviceModel.h"
 
 Rp2040::DeviceModel Config_DeviceModel = Rp2040::DeviceModel::W5500EvbPico;
