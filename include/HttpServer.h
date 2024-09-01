@@ -1,3 +1,5 @@
+#pragma once
+
 #include "CH9120/CH9120.h"
 #include "CH9120/CH9120Server.h"
 #include "DeviceModel.h"
