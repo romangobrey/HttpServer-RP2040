@@ -1,0 +1,102 @@
+diff --git a/Internet/SNTP/sntp.c b/Internet/SNTP/sntp.c
+index 5b9c463..6213c79 100644
+--- a/Internet/SNTP/sntp.c
++++ b/Internet/SNTP/sntp.c
+@@ -448,3 +448,58 @@ tstamp changedatetime_to_seconds(void)
+ 
+ 	return seconds;
+ }
++
++/* User-defined function */
++int64_t SNTP_get_current_timestamp()
++{
++    int64_t timestamp = 0;
++    uint16_t RSR_len;
++
++    uint32_t destip = 0;
++    uint16_t destport;
++    uint16_t startindex = 40; //last 8-byte of data_buf[size is 48 byte] is xmt, so the startindex should be 40
++
++    switch (getSn_SR(NTP_SOCKET))
++    {
++    case SOCK_UDP:
++        if ((RSR_len = getSn_RX_RSR(NTP_SOCKET)) > 0)
++        {
++            if (RSR_len > MAX_SNTP_BUF_SIZE)
++                RSR_len = MAX_SNTP_BUF_SIZE; // if Rx data size is lager than TX_RX_MAX_BUF_SIZE
++            recvfrom(NTP_SOCKET, data_buf, RSR_len, (uint8_t *)&destip, &destport);
++            // for (int i = 0; i < 48; i++)
++            // {
++            // 	printf("%2x ", data_buf[i]);
++            // }
++            for (int i = 0; i < 4; i++)
++            {
++                timestamp = (timestamp << 8) | data_buf[startindex + i];
++            }
++            timestamp = TIME_NTP_TO_LOCAL(timestamp);
++            ntp_retry_cnt = 0;
++            close(NTP_SOCKET);
++            return timestamp;
++        }
++
++        if (ntp_retry_cnt < 5)
++        {
++            sendto(NTP_SOCKET, ntpmessage, sizeof(ntpmessage), NTPformat.dstaddr, ntp_port);
++            ntp_retry_cnt++;
++        }
++        else //ntp retry fail
++        {
++            ntp_retry_cnt = 0;
++#ifdef _SNTP_DEBUG_
++            printf("ntp retry failed!\r\n");
++#endif
++            close(NTP_SOCKET);
++        }
++        break;
++    case SOCK_CLOSED:
++        socket(NTP_SOCKET, Sn_MR_UDP, ntp_port, 0);
++        break;
++    }
++    // Return value
++    // 0 - failed / timestamp - success
++    return 0;
++}
+diff --git a/Internet/SNTP/sntp.h b/Internet/SNTP/sntp.h
+index cfc05b9..4f09df9 100644
+--- a/Internet/SNTP/sntp.h
++++ b/Internet/SNTP/sntp.h
+@@ -22,6 +22,18 @@ extern "C" {
+ 
+ #define	MAX_SNTP_BUF_SIZE	sizeof(ntpformat)		///< maximum size of DNS buffer. */
+ 
++/* Time Base Conversion Macros
++ *
++ * The NTP timebase is 00:00 Jan 1 1900.  The local
++ * time base is 00:00 Jan 1 1970.  Convert between
++ * these two by added or substracting 70 years
++ * worth of time.  Note that 17 of these years were
++ * leap years.
++ */
++#define TIME_BASEDIFF           ((((uint64_t)70*365 + 17) * 24*3600))
++#define TIME_NTP_TO_LOCAL(t)	((t)-TIME_BASEDIFF)
++#define TIME_LOCAL_TO_NTP(t)	((t)+TIME_BASEDIFF)
++
+ /* for ntpclient */
+ typedef signed char s_char;
+ typedef unsigned long long tstamp;
+@@ -69,6 +81,15 @@ int8_t SNTP_run(datetime *time);
+ tstamp changedatetime_to_seconds(void);
+ void calcdatetime(tstamp seconds);
+ 
++/* User-defined function */
++/*
++ * @brief Get current timestamp by SNTP sever
++ * @return    The value is as the follow
++ *            @ref 0 - Failed to get current timestamp
++ *            @timestamp - Succeeded to get current timestamp
++ */
++int64_t SNTP_get_current_timestamp(void);
++
+ #ifdef __cplusplus
+ }
+ #endif
