@@ -4,23 +4,23 @@
 
 using namespace Rp2040;
 
-HttpRequest HttpParser::GetHttpRequest(String rawRequest)
+HttpRequest HttpParser::getHttpRequest(String rawRequest)
 {
     HttpRequest request;
-    request.methodType = GetMethodType(rawRequest);
-    request.methodName = GetMethod(rawRequest);
-    request.arguments = GetArgument(rawRequest);
-    std::pair<String, String> protocol = GetProtocol(rawRequest);
+    request.methodType = getMethodType(rawRequest);
+    request.methodName = getMethod(rawRequest);
+    request.arguments = getArgument(rawRequest);
+    std::pair<String, String> protocol = getProtocol(rawRequest);
     request.protocolName = protocol.first;
     request.protocolVersion = protocol.second;
-    request.headers = GetHeaders(rawRequest);
-    request.body = GetContent(rawRequest);
+    request.headers = getHeaders(rawRequest);
+    request.body = getContent(rawRequest);
     return request;
 }
 
-HttpMethodType HttpParser::GetMethodType(String content)
+HttpMethodType HttpParser::getMethodType(String content)
 {
-    String firstRow = GetFirstRow(content);
+    String firstRow = getFirstRow(content);
     int firstSpaceIdx = firstRow.indexOf(" ");
     String methodStr = firstRow.substring(0, firstSpaceIdx);
     methodStr.toUpperCase();
@@ -57,9 +57,9 @@ HttpMethodType HttpParser::GetMethodType(String content)
     return HttpMethodType::UNKNOWN;
 }
 
-String HttpParser::GetMethod(String content)
+String HttpParser::getMethod(String content)
 {
-    String firstRow = GetFirstRow(content);
+    String firstRow = getFirstRow(content);
     int firstSpaceIdx = firstRow.indexOf(" /");
     int secondSpaceIdx = firstRow.indexOf(" ", firstSpaceIdx + 2);
     String methodArgStr = firstRow.substring(firstSpaceIdx + 2, secondSpaceIdx);
@@ -74,7 +74,7 @@ String HttpParser::GetMethod(String content)
     }
 }
 
-String HttpParser::GetRawMethodType(HttpMethodType method)
+String HttpParser::getRawMethodType(HttpMethodType method)
 {
     switch (method)
     {
@@ -97,9 +97,9 @@ String HttpParser::GetRawMethodType(HttpMethodType method)
     }
 }
 
-String HttpParser::GetArgument(String content)
+String HttpParser::getArgument(String content)
 {
-    String firstRow = GetFirstRow(content);
+    String firstRow = getFirstRow(content);
     int firstSpaceIdx = firstRow.indexOf(" /");
     int secondSpaceIdx = firstRow.indexOf(" ", firstSpaceIdx + 2);
     String methodArgStr = firstRow.substring(firstSpaceIdx + 2, secondSpaceIdx + 1);
@@ -114,7 +114,7 @@ String HttpParser::GetArgument(String content)
     }
 }
 
-String HttpParser::GetContent(String content)
+String HttpParser::getContent(String content)
 {
     String bodyDelimiter = "\r\n\r\n";
     int postContentStartIdx = content.indexOf(bodyDelimiter);
@@ -124,16 +124,16 @@ String HttpParser::GetContent(String content)
 
 #pragma region PrivateFunctions
 
-String HttpParser::GetFirstRow(String content)
+String HttpParser::getFirstRow(String content)
 {
     int firstRowEnd = content.indexOf("\r\n");
     String firstRow = content.substring(0, firstRowEnd + 1);
     return firstRow;
 }
 
-std::pair<String, String> HttpParser::GetProtocol(String content)
+std::pair<String, String> HttpParser::getProtocol(String content)
 {
-    String firstRow = GetFirstRow(content);
+    String firstRow = getFirstRow(content);
     int whitespaceIdx = firstRow.lastIndexOf(' ');
     String protocolSubStr = firstRow.substring(whitespaceIdx);
     int delimeterIdx = protocolSubStr.indexOf('/');
@@ -143,7 +143,7 @@ std::pair<String, String> HttpParser::GetProtocol(String content)
     return std::pair<String, String>(protocolName, protocolType);
 }
 
-std::map<String, String> HttpParser::GetHeaders(String content)
+std::map<String, String> HttpParser::getHeaders(String content)
 {
     String rowDelimiter = "\r\n";
     int firstRowEnd = content.indexOf(rowDelimiter);

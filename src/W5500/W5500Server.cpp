@@ -1,5 +1,6 @@
 #include "W5500/W5500Server.h"
 #include "HttpParser.h"
+#include "Utils.h"
 
 String Rp2040::W5500Server::getRawRequest(EthernetClient client)
 {
@@ -53,7 +54,10 @@ void Rp2040::W5500Server::init(UCHAR serverIp[4], UWORD port)
 {
     server = std::make_shared<EthernetServer>(port);
 
-    byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+    // byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+    byte mac[6];
+    Utils::generateRp2040MacAddress(mac);
+
     IPAddress ip(serverIp);
 
     Ethernet.init(W5500_EVB_Pico_EthernetPIN);
@@ -73,7 +77,7 @@ void Rp2040::W5500Server::handleRequest(HttpResponse (*callback)(HttpRequest))
     String rawRequest = getRawRequest(client);
     if (callback != NULL)
     {
-        HttpRequest request = Rp2040::HttpParser::GetHttpRequest(rawRequest);
+        HttpRequest request = Rp2040::HttpParser::getHttpRequest(rawRequest);
         HttpResponse response = callback(request);
         sendResponse(client, response);
 
@@ -93,7 +97,7 @@ void Rp2040::W5500Server::handleRequest(IHttpHandler *handler)
     String rawRequest = getRawRequest(client);
     if (handler != NULL)
     {
-        HttpRequest request = Rp2040::HttpParser::GetHttpRequest(rawRequest);
+        HttpRequest request = Rp2040::HttpParser::getHttpRequest(rawRequest);
         HttpResponse response = handler->handle(request);
         sendResponse(client, response);
 

@@ -9,16 +9,16 @@ namespace Rp2040
     class HttpParser
     {
     public:
-        static HttpRequest GetHttpRequest(String rawRequest);
-        static HttpMethodType GetMethodType(String content);
-        static String GetRawMethodType(HttpMethodType type);
+        static HttpRequest getHttpRequest(String rawRequest);
+        static HttpMethodType getMethodType(String content);
+        static String getRawMethodType(HttpMethodType type);
 
     private:
-        static String GetMethod(String content);
-        static String GetArgument(String content);
-        static String GetContent(String content);
-        static String GetFirstRow(String content);
-        static std::pair<String, String> GetProtocol(String content);
-        static std::map<String, String> GetHeaders(String content);
+        static String getMethod(String content);
+        static String getArgument(String content);
+        static String getContent(String content);
+        static String getFirstRow(String content);
+        static std::pair<String, String> getProtocol(String content);
+        static std::map<String, String> getHeaders(String content);
     };
 }
