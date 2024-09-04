@@ -73,7 +73,7 @@ HttpResponse handleOtherRequest(HttpRequest request)
     response.code = 200;
     response.codeDescription = "OK";
     response.body = "";
-    response.body += "Got " + HttpParser::GetRawMethodType(request.methodType) + " method type";
+    response.body += "Got " + HttpParser::getRawMethodType(request.methodType) + " method type";
     response.body += "\r\n";
     response.body += "Got " + request.methodName + " method";
 

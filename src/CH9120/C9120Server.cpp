@@ -38,7 +38,7 @@ void CH9120Server::handleRequest(HttpResponse (*callback)(HttpRequest) = nullptr
 
     if (callback != NULL)
     {
-        HttpRequest request = HttpParser::GetHttpRequest(rawRequest);
+        HttpRequest request = HttpParser::getHttpRequest(rawRequest);
         HttpResponse response = callback(request);
         sendResponse(response);
     }
@@ -55,7 +55,7 @@ void CH9120Server::handleRequest(IHttpHandler *handler)
 
     if (handler != NULL)
     {
-        HttpRequest request = HttpParser::GetHttpRequest(rawRequest);
+        HttpRequest request = HttpParser::getHttpRequest(rawRequest);
         HttpResponse response = handler->handle(request);
         sendResponse(response);
     }
