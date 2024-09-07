@@ -2,5 +2,12 @@
 
 #include "DeviceModel.h"
 
-extern Rp2040::DeviceModel Config_DeviceModel;
-extern unsigned char Config_ServerIp[4];
+namespace Rp2040
+{
+    class Configuration
+    {
+    public:
+        static constexpr unsigned char serverIp[4] = {192, 168, 1, 170};
+        static DeviceModel getDeviceModel();
+    };
+}

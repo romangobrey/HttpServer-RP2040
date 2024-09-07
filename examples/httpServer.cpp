@@ -1,18 +1,18 @@
 #include <Arduino.h>
 #include <HttpServer.h>
 #include <HttpParser.h>
-#include "..\configuration\Rp2040Eth.h"
+#include "Configuration.h"
 
 using namespace Rp2040;
 
 HttpResponse handleRequest(HttpRequest request);
-HttpServer httpServer(Config_DeviceModel);
+HttpServer httpServer(Configuration::getDeviceModel());
 
 void setup()
 {
     Serial.begin(115200);
     Serial.println("init started");
-    httpServer.init(Config_ServerIp);
+    httpServer.init(const_cast<unsigned char *>(Configuration::serverIp));
     Serial.println("init finished");
 }
 
@@ -73,7 +73,7 @@ HttpResponse handleOtherRequest(HttpRequest request)
     response.code = 200;
     response.codeDescription = "OK";
     response.body = "";
-    response.body += "Got " + HttpParser::GetRawMethodType(request.methodType) + " method type";
+    response.body += "Got " + HttpParser::getRawMethodType(request.methodType) + " method type";
     response.body += "\r\n";
     response.body += "Got " + request.methodName + " method";
 

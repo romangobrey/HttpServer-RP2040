@@ -1,17 +1,17 @@
 #include <Arduino.h>
 #include <HttpServer.h>
-#include "..\configuration\Rp2040Eth.h"
+#include "Configuration.h"
 
 using namespace Rp2040;
 
 HttpResponse handleRequest(HttpRequest request);
-HttpServer httpServer(Config_DeviceModel);
+HttpServer httpServer(Configuration::getDeviceModel());
 
 void setup()
 {
     Serial.begin(115200);
     Serial.println("init started");
-    httpServer.init(Config_ServerIp);
+    httpServer.init(const_cast<unsigned char *>(Configuration::serverIp));
     Serial.println("init finished");
 }
 
