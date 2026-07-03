@@ -9,8 +9,5 @@ Rp2040::DeviceModel Configuration::getDeviceModel()
         return DeviceModel::Rp2040Eth;
     }
 
-    if (SHIELD == "W5500-EVB-Pico")
-    {
-        return DeviceModel::W5500EvbPico;
-    }
+    return DeviceModel::W5500EvbPico;
 }
