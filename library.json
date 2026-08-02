@@ -1,7 +1,7 @@
 {
   "name": "HttpServer",
-  "version": "1.0.18",
-  "description": "HTTP server for embedded devices",
+  "version": "1.1.0",
+  "description": "HTTP server for embedded devices via W5500 and CH9120 Ethernet modules. Compatible with Raspberry Pi Pico RP2040 (RP2350).",
   "keywords": "http, server, Pico, RP2040, CH9120, W5500",
   "repository": {
     "type": "git",

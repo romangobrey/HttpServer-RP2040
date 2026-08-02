@@ -41,4 +41,8 @@ void Utils::generateRp2040MacAddress(uint8_t *macAddress)
     {
         macAddress[i] = bytes[i + 2]; // 5C A5 63 59 55 37 (cut first 2 bytes)
     }
+    if (macAddress[0] % 2 != 0)
+    {
+        macAddress[0]++; // bump odd value up by 1 to make it even
+    }
 }

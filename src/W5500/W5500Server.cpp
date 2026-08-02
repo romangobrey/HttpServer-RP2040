@@ -47,7 +47,26 @@ String Rp2040::W5500Server::getRawRequest(EthernetClient client)
 
 void Rp2040::W5500Server::sendResponse(EthernetClient client, HttpResponse response)
 {
-    client.println(response.toString());
+    String raw = response.toString();
+
+    const size_t CHUNK = 512;
+    size_t remaining = raw.length();
+    const char* p = raw.c_str();
+
+    while (remaining > 0) {
+        size_t n = remaining > CHUNK ? CHUNK : remaining;
+        size_t written = client.write((const uint8_t*)p, n);
+
+        if (written == 0) {
+            // socket buffer full or connection dropped — bail out
+            break;
+        }
+
+        p += written;
+        remaining -= written;
+    }
+
+    client.flush();
 }
 
 void Rp2040::W5500Server::init(UCHAR serverIp[4], UWORD port)
