@@ -8,6 +8,7 @@ It supports HTTP only.
 ### Hardware requirements
 - Waveshare RP2040-ETH (TCP/IP controller CH9120)
 - Wiznet W5500-EVB-Pico (TCP/IP controller W5500)
+- Wiznet W5500-EVB-Pico2 (TCP/IP controller W5500)
 
 ## Dependencies
 The library uses "arduino-libraries/Ethernet" when W5500 is used.
