@@ -1,6 +1,6 @@
 #pragma once
 
-#include <arduino.h>
+#include <Arduino.h>
 #include <map>
 
 namespace Rp2040

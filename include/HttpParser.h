@@ -1,6 +1,6 @@
 #pragma once
 
-#include <arduino.h>
+#include <Arduino.h>
 #include "HttpMethodType.h"
 #include "HttpRequest.h"
 
